@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مصطلحات التربية الخاصة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-color);
+            line-height: 1.6;
+            padding-bottom: 60px; /* مسافة للفوتر */
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* شريط البحث */
+        .search-container {
+            max-width: 600px;
+            margin: -25px auto 30px;
+            padding: 0 20px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        #searchInput:focus {
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+            transform: scale(1.02);
+        }
+
+        /* حاوية البطاقات */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* تصميم البطاقة */
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-number {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f0f2f5;
+            z-index: 0;
+        }
+
+        .term-en {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+            direction: ltr; /* للنص الإنجليزي */
+            text-align: left;
+        }
+
+        .term-ar {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        /* الفوتر (التوقيع) */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 1.1rem;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+        }
+
+        footer strong {
+            color: #ffd700; /* لون ذهبي للاسم */
+        }
+
+        /* للتجاوب مع الجوال */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.8rem; }
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>قاموس مصطلحات التربية الخاصة</h1>
+        <p>Special Education Terminology</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="ابحث عن مصطلح (عربي أو إنجليزي)..." onkeyup="filterTerms()">
+    </div>
+
+    <div class="container" id="cardsContainer">
+        </div>
+
+    <footer>
+        إعداد الطالبة: <strong>حوراء محمد سلمان حسن</strong>
+    </footer>
+
+    <script>
+        // قائمة المصطلحات
+        const terms = [
+            { en: "Special Education", ar: "تربية خاصة / تعليم خاص" },
+            { en: "Disability", ar: "إعاقة" },
+            { en: "Inclusion", ar: "الدمج (في الفصول العادية)" },
+            { en: "Mainstreaming", ar: "الإدماج في التيار العام" },
+            { en: "Individualized Education Program (IEP)", ar: "البرنامج التربوي الفردي" },
+            { en: "Learning Disability (LD)", ar: "صعوبة تعلم" },
+            { en: "Autism Spectrum Disorder (ASD)", ar: "اضطراب طيف التوحد" },
+            { en: "Attention Deficit Hyperactivity Disorder (ADHD)", ar: "اضطراب فرط الحركة وتشتت الانتباه" },
+            { en: "Intellectual Disability", ar: "الإعاقة الذهنية / التخلف العقلي" },
+            { en: "Gifted and Talented", ar: "الموهوبون والمتفوقون" },
+            { en: "Early Intervention", ar: "التدخل المبكر" },
+            { en: "Assessment", ar: "التقييم" },
+            { en: "Diagnosis", ar: "التشخيص" },
+            { en: "Related Services", ar: "الخدمات المساندة" },
+            { en: "Speech Therapy", ar: "علاج النطق واللغة" },
+            { en: "Occupational Therapy (OT)", ar: "العلاج الوظيفي / العلاج المهني" },
+            { en: "Physical Therapy (PT)", ar: "العلاج الطبيعي" },
+            { en: "Behavioral Intervention", ar: "التدخل السلوكي" },
+            { en: "Adaptive Skills", ar: "المهارات التكيفية" },
+            { en: "Developmental Delay", ar: "تأخر نمائي" },
+            { en: "Multiple Disabilities", ar: "إعاقات متعددة" },
+            { en: "Visual Impairment", ar: "الإعاقة البصرية" },
+            { en: "Hearing Impairment", ar: "الإعاقة السمعية" },
+            { en: "Physical Disability", ar: "الإعاقة الحركية / الجسدية" },
+            { en: "Emotional and Behavioral Disorder (EBD)", ar: "الاضطراب الانفعالي والسلوكي" },
+            { en: "Differentiated Instruction", ar: "التدريس المتمايز" },
+            { en: "Modification", ar: "تعديل (في المنهج أو المتطلبات)" },
+            { en: "Accommodation", ar: "تسهيل (تعديل في طريقة التدريس أو التقييم)" },
+            { en: "Assistive Technology (AT)", ar: "التكنولوجيا المساعدة" },
+            { en: "Augmentative and Alternative Communication (AAC)", ar: "التواصل المعزز والبديل" },
+            { en: "Inclusive Classroom", ar: "الفصل الدامج" },
+            { en: "Resource Room", ar: "غرفة المصادر" },
+            { en: "Self-Contained Classroom", ar: "الفصل المنفصل / ذاتي الاحتواء" },
+            { en: "Transition Services", ar: "خدمات الانتقال (للمرحلة ما بعد المدرسة)" },
+            { en: "Paraprofessional", ar: "المساعد التربوي / فني التربية الخاصة" },
+            { en: "Least Restrictive Environment (LRE)", ar: "البيئة الأقل تقييدًا" },
+            { en: "Manifestation Determination", ar: "تحديد العلاقة (بين السلوك والإعاقة)" },
+            { en: "Sensory Processing Disorder", ar: "اضطراب المعالجة الحسية" },
+            { en: "Dyslexia", ar: "عسر القراءة / الديسلكسيا" },
+            { en: "Dyscalculia", ar: "عسر الحساب" },
+            { en: "Dysgraphia", ar: "عسر الكتابة" },
+            { en: "Nonverbal Learning Disability (NVLD)", ar: "صعوبة التعلم غير اللفظية" },
+            { en: "Social Skills Training", ar: "تدريب المهارات الاجتماعية" },
+            { en: "Positive Behavior Support (PBS)", ar: "دعم السلوك الإيجابي" },
+            { en: "Functional Behavioral Assessment (FBA)", ar: "التقييم الوظيفي للسلوك" },
+            { en: "Individuals with Disabilities Education Act (IDEA)", ar: "قانون تعليم الأفراد ذوي الإعاقات (في أمريكا)" }
+        ];
+
+        const container = document.getElementById('cardsContainer');
+
+        function displayTerms(items) {
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-number">${index + 1}</div>
+                    <div class="term-en">${item.en}</div>
+                    <div class="term-ar">${item.ar}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterTerms() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = terms.filter(item => 
+                item.en.toLowerCase().includes(searchText) || 
+                item.ar.includes(searchText)
+            );
+            displayTerms(filtered);
+        }
+
+        // عرض جميع المصطلحات عند التحميل
+        displayTerms(terms);
+    </script>
+
+</body>
+</html>
